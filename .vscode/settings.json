@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    ".env": "properties",
+    ".env.*": "properties",
+    "*.env": "properties"
+  }
+}

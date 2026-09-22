@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f8f7;
+  --foreground: #0f1a19;
+  --muted: #56655f;
+  --surface: #ffffff;
+  --surface-2: #eef2f0;
+  --border: #dfe6e3;
+  --primary: #0f766e;
+  --primary-strong: #115e59;
+  --primary-soft: #e2f2ef;
+  --primary-foreground: #ffffff;
+  --accent: #d97706;
+  --ring: #5eead4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a1110;
+    --foreground: #e6efec;
+    --muted: #93a6a0;
+    --surface: #111a19;
+    --surface-2: #17221f;
+    --border: #243330;
+    --primary: #2dd4bf;
+    --primary-strong: #5eead4;
+    --primary-soft: #0f2a27;
+    --primary-foreground: #04201d;
+    --accent: #fbbf24;
+    --ring: #14b8a6;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* iOS Safari zooms the page when a focused field is under 16px. */
+@media (max-width: 639px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+a,
+button,
+summary,
+label {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Keep fixed/sticky chrome clear of notches and home indicators. */
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Faint graph-paper backdrop, faded out towards the edges. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(70% 60% at 50% 0%, #000 30%, transparent 100%);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.animate-float { animation: float 7s ease-in-out infinite; }
+.animate-rise { animation: rise 0.45s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-rise {
+    animation: none;
+  }
+}
