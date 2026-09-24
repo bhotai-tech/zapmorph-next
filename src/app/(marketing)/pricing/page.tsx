@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Check, Minus, ShieldCheck } from 'lucide-react';
 import { PricingCards } from '@/components/marketing/pricing-cards';
 import { Faq, faqJsonLd, type FaqItem } from '@/components/marketing/faq';
+import { siteConfig } from '@/config/site';
 import { formatUsd } from '@/lib/plans';
 import { getLivePlans } from '@/lib/plans-live';
 import { PLAN_LIMITS, formatBytes } from '@/lib/usage-limits';
@@ -74,7 +75,7 @@ const FAQ: FaqItem[] = [
   },
   {
     question: 'Do you offer discounts for teams or education?',
-    answer: 'Get in touch at the support email in the footer — we’re happy to help schools, non-profits and teams.',
+    answer: `Get in touch through our contact page or at ${siteConfig.supportEmail} — we’re happy to help schools, non-profits and teams.`,
   },
 ];
 

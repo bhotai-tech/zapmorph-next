@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import { initializePaddle, type Environments } from '@paddle/paddle-js';
 import { Button, ButtonLink } from '@/components/ui/button';
+import { siteConfig } from '@/config/site';
 
 type State = 'loading' | 'open' | 'completed' | 'closed' | 'error';
 
@@ -83,7 +84,7 @@ export function PaddleLinkLauncher({
         body={
           state === 'closed'
             ? 'No payment was taken. You can reopen the checkout whenever you’re ready.'
-            : 'Disable any ad blocker for this site and try again. If it keeps failing, contact support.'
+            : `Disable any ad blocker for this site and try again. If it keeps failing, email ${siteConfig.supportEmail}.`
         }
         actions={<Button onClick={() => window.location.reload()}>Reopen checkout</Button>}
       />

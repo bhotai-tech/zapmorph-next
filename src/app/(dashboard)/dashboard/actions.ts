@@ -11,6 +11,7 @@ import {
 } from '@/lib/billing/subscriptions';
 import { apiLimiter } from '@/lib/rate-limit';
 import { isProd } from '@/config/env';
+import { siteConfig } from '@/config/site';
 import { audit } from '@/lib/audit';
 import { log } from '@/lib/logger';
 
@@ -44,7 +45,7 @@ export async function cancelSubscription(_prev: ActionState, formData: FormData)
     result = await cancelAutoRenew(subscription.id, user.id);
   } catch (err) {
     log('error', 'billing: cancel auto-renew failed', { subscriptionId: subscription.id, error: String(err) });
-    return { ok: false, message: 'Could not cancel right now. Try again or contact support.' };
+    return { ok: false, message: `Could not cancel right now. Try again or email ${siteConfig.supportEmail}.` };
   }
   if (!result.ok) {
     return {
@@ -116,12 +117,12 @@ export async function deleteAccount(_prev: ActionState, formData: FormData): Pro
   if (!(await cancelAllSubscriptionsNow(user.id))) {
     return {
       ok: false,
-      message: 'We couldn’t cancel your subscription automatically. Contact support to delete your account.',
+      message: `We couldn’t cancel your subscription automatically. Email ${siteConfig.supportEmail} to delete your account.`,
     };
   }
 
   const { error } = await createAdminClient().auth.admin.deleteUser(user.id);
-  if (error) return { ok: false, message: 'Could not delete account. Contact support.' };
+  if (error) return { ok: false, message: `Could not delete account. Email ${siteConfig.supportEmail}.` };
 
   await supabase.auth.signOut();
   redirect('/');

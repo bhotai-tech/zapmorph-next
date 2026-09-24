@@ -19,9 +19,10 @@ export function Footer() {
             <li><Link href="/terms" className="inline-block py-1 text-muted hover:text-foreground">Terms of service</Link></li>
             <li><Link href="/privacy" className="inline-block py-1 text-muted hover:text-foreground">Privacy policy</Link></li>
             <li><Link href="/refund-policy" className="inline-block py-1 text-muted hover:text-foreground">Refund policy</Link></li>
+            <li><Link href="/contact" className="inline-block py-1 text-muted hover:text-foreground">Contact support</Link></li>
             <li>
-              <a href={`mailto:${siteConfig.supportEmail}`} className="inline-block py-1 text-muted hover:text-foreground">
-                Contact support
+              <a href={`mailto:${siteConfig.supportEmail}`} className="inline-block break-all py-1 text-muted hover:text-foreground">
+                {siteConfig.supportEmail}
               </a>
             </li>
           </ul>

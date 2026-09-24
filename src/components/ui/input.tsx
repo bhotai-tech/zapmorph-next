@@ -21,6 +21,15 @@ export function Input({ className = '', type, ...props }: ComponentProps<'input'
   );
 }
 
+export function Textarea({ className = '', ...props }: ComponentProps<'textarea'>) {
+  return (
+    <textarea
+      className={`${fieldClasses.replace('h-11 ', '')} min-h-32 resize-y px-3 py-2.5 leading-6 ${className}`}
+      {...props}
+    />
+  );
+}
+
 export function PasswordInput({ className = '', ...props }: Omit<ComponentProps<'input'>, 'type'>) {
   const [visible, setVisible] = useState(false);
   return (

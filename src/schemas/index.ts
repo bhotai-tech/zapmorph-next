@@ -21,6 +21,11 @@ export const loginSchema = z.object({
   password: z.string().min(1).max(128),
 });
 
+export const contactSchema = z.object({
+  email: emailSchema,
+  message: z.string().trim().min(10, 'Please tell us a bit more (at least 10 characters).').max(5_000, 'Message is too long (5,000 characters max).'),
+});
+
 export const planIdSchema = z.enum(PLAN_IDS);
 
 export const checkoutSchema = z.object({

@@ -66,6 +66,8 @@ function makeLimiter(
 export const authLimiter = makeLimiter(5, 60, 'auth');
 export const checkoutLimiter = makeLimiter(10, 3_600, 'checkout');
 export const apiLimiter = makeLimiter(60, 60, 'api');
+// Every accepted submission sends a real email, so keep this tight.
+export const contactLimiter = makeLimiter(5, 3_600, 'contact');
 // Conversions run in the browser, so a database outage must not block them:
 // the quota itself is enforced by consume_usage, and the UI fails open too.
 export const usageLimiter = makeLimiter(120, 60, 'usage', { failOpen: true });

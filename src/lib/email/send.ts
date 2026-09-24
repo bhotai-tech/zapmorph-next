@@ -19,15 +19,28 @@ function client(): Resend | null {
   return new Resend(env.RESEND_API_KEY);
 }
 
-async function send(to: string, subject: string, html: string) {
+/** Resolves true only when Resend accepted the message. Never throws. */
+async function send(to: string, subject: string, html: string, replyTo?: string): Promise<boolean> {
   const resend = client();
   if (!resend) {
     log('warn', 'email: skipped (no RESEND_API_KEY)', { subject });
-    return;
+    return false;
   }
-  const { error } = await resend.emails.send({ from: env.EMAIL_FROM, to, subject, html });
-  if (error) log('error', 'email: send failed', { subject, error: error.message });
+  try {
+    const { error } = await resend.emails.send({ from: env.EMAIL_FROM, to, subject, html, replyTo });
+    if (error) {
+      log('error', 'email: send failed', { subject, error: error.message });
+      return false;
+    }
+    return true;
+  } catch (err) {
+    log('error', 'email: send threw', { subject, error: String(err) });
+    return false;
+  }
 }
+
+const escapeHtml = (text: string) =>
+  text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 /** Shared branded layout — table-based with inline styles for Gmail/Outlook/Apple Mail. */
 function wrap(heading: string, body: string, footnote?: string) {
@@ -78,6 +91,26 @@ const button = (href: string, label: string) => `
     </td>
   </tr>
 </table>`;
+
+/**
+ * Delivers a contact-form submission to the support inbox. Reply-To is the
+ * visitor's address, so answering from the inbox goes straight back to them.
+ * Both fields are HTML-escaped; only the zod-validated address (no whitespace
+ * or control characters possible) appears in the subject and Reply-To.
+ */
+export async function sendContactNotification(fromEmail: string, message: string): Promise<boolean> {
+  return send(
+    siteConfig.supportEmail,
+    `Support request from ${fromEmail}`,
+    wrap(
+      'New support request',
+      p(`${strong('From:')} ${escapeHtml(fromEmail)}`) +
+        `<p style="margin:0;white-space:pre-wrap;font-family:Arial,sans-serif;font-size:15px;line-height:24px;color:#16162b;background-color:#f4f4fb;border-radius:10px;padding:16px 18px;">${escapeHtml(message)}</p>`,
+      `Sent from the ${siteConfig.name} contact form. Reply to this email to answer ${escapeHtml(fromEmail)} directly.`,
+    ),
+    fromEmail,
+  );
+}
 
 /** Sent once, right after a purchase is fulfilled and Pro access is granted. */
 export async function sendPurchaseConfirmationEmail(to: string, planLabel: string) {

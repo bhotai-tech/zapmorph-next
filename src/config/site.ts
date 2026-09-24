@@ -8,5 +8,6 @@ export const siteConfig = {
     'Free online file converters for images, PDFs, spreadsheets, data, audio and video. Files are converted on your device and never uploaded.',
   // Override per environment with NEXT_PUBLIC_APP_URL (localhost in dev).
   url: process.env.NEXT_PUBLIC_APP_URL ?? 'https://zapmorph.com',
-  supportEmail: 'support@zapmorph.com',
+  // Receives contact-form submissions (lib/email/send.ts) and is shown across the app.
+  supportEmail: 'zapmorph@outlook.com',
 } as const;
