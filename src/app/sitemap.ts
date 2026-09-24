@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '', priority: 1 },
     { path: '/converters', priority: 0.9 },
     { path: '/pricing', priority: 0.8 },
+    { path: '/contact', priority: 0.3 },
     { path: '/terms', priority: 0.2 },
     { path: '/privacy', priority: 0.2 },
     { path: '/refund-policy', priority: 0.2 },

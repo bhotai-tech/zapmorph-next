@@ -52,6 +52,12 @@ const jsonLd = [
     name: siteConfig.name,
     url: siteConfig.url,
     description: siteConfig.description,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: siteConfig.supportEmail,
+      url: `${siteConfig.url}/contact`,
+    },
   },
   {
     '@context': 'https://schema.org',
